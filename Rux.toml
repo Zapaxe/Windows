@@ -1,0 +1,5 @@
+[Package]
+Name = "Windows"
+Version = "0.1.0"
+Authors = ["Ivan Muzyka <musicvano@mail.com>"]
+Description = "Windows API"
