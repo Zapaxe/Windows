@@ -7,21 +7,55 @@
 module Windows {
     @[Import(lib: "kernel32.dll")]
     extern {
+        // Allocates a new console for the calling process
+        // https://learn.microsoft.com/en-us/windows/console/allocconsole
+        func AllocConsole() -> bool32;
+
+        // Generates simple tones on the speaker
+        // https://learn.microsoft.com/en-us/windows/win32/api/utilapiset/nf-utilapiset-beep
+        func Beep(freq: uint32, duration: uint32) -> bool32;    
+
+        /// Ends the calling process and all its threads
+        /// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-exitprocess
+        func ExitProcess(exitCode: uint32);
+
+        // Retrieves the calling thread's last-error code value
+        // https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror
+        func GetLastError() -> uint32;
+
         /// Retrieves a handle to the default heap of the calling process
         /// https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-getprocessheap
         func GetProcessHeap() -> *opaque;
+
+        // Retrieves a handle to the specified standard device (standard input, standard output, or standard error)
+        // https://learn.microsoft.com/en-us/windows/console/getstdhandle
+        func GetStdHandle(stdHandle: uint32) -> *opaque;
 
         /// Allocates a block of memory from a heap. The allocated memory is not movable
         /// https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-heapalloc
         func HeapAlloc(heap: *opaque, flags: uint32, bytes: uint) -> *opaque;
 
+        /// Frees a memory block allocated from a heap by the HeapAlloc or HeapReAlloc function
+        /// https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-heapfree
+        func HeapFree(heap: *opaque, flags: uint32, mem: *opaque) -> bool32;
+
         /// Reallocates a block of memory from a heap
         /// https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-heaprealloc
         func HeapReAlloc(heap: *opaque, flags: uint32, mem: *opaque, bytes: uint) -> *opaque;
 
-        /// Frees a memory block allocated from a heap by the HeapAlloc or HeapReAlloc function
-        /// https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-heapfree
-        func HeapFree(heap: *opaque, flags: uint32, mem: *opaque) -> bool32;
+        /// Maps a character string to a UTF-16 wide character string
+        /// https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar
+        func MultiByteToWideChar(
+            codePage: uint32,
+            flags: uint32,
+            multiByteStr: *const char8,
+            multiByte: int32,
+            wideCharStr: *char16,
+            wideChar: int32) -> int32;
+
+        /// Copies a block of memory from one location to another
+        /// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa366535(v=vs.85)
+        func RtlCopyMemory(destination: *opaque, source: *const opaque, length: uint);
 
         /// Fills a block of memory with the specified fill value
         /// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlfillmemory
@@ -31,25 +65,9 @@ module Windows {
         /// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlzeromemory
         func RtlZeroMemory(destination: *opaque, length: uint);
 
-        /// Copies a block of memory from one location to another
-        /// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa366535(v=vs.85)
-        func RtlCopyMemory(destination: *opaque, source: *const opaque, length: uint);
-
-        // Allocates a new console for the calling process
-        // https://learn.microsoft.com/en-us/windows/console/allocconsole
-        func AllocConsole() -> bool32;
-
-        // Generates simple tones on the speaker
-        // https://learn.microsoft.com/en-us/windows/win32/api/utilapiset/nf-utilapiset-beep
-        func Beep(freq: uint32, duration: uint32) -> bool32;    
-
-        // Retrieves a handle to the specified standard device (standard input, standard output, or standard error)
-        // https://learn.microsoft.com/en-us/windows/console/getstdhandle
-        func GetStdHandle(stdHandle: uint32) -> *opaque;
-
-        // Retrieves the calling thread's last-error code value
-        // https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror
-        func GetLastError() -> uint32;
+        /// Suspends the execution of the current thread until the time-out interval elapses
+        /// https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-sleep
+        func Sleep(milliseconds: uint32);
 
         // Writes a character string to a console screen buffer beginning at the current cursor location
         // https://learn.microsoft.com/en-us/windows/console/writeconsole
@@ -68,23 +86,5 @@ module Windows {
             numberOfCharsToWrite: uint32,
             numberOfCharsWritten: *uint32,
             reserved: *opaque) -> bool32;
-
-        /// Maps a character string to a UTF-16 wide character string
-        /// https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar
-        func MultiByteToWideChar(
-            codePage: uint32,
-            flags: uint32,
-            multiByteStr: *const char8,
-            multiByte: int32,
-            wideCharStr: *char16,
-            wideChar: int32) -> int32;
-
-        /// Suspends the execution of the current thread until the time-out interval elapses
-        /// https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-sleep
-        func Sleep(milliseconds: uint32);
-
-        /// Ends the calling process and all its threads
-        /// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-exitprocess
-        func ExitProcess(exitCode: uint32);
     }
 }
