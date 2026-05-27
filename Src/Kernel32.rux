@@ -221,6 +221,15 @@ module Windows {
         /// https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-sleep
         func Sleep(milliseconds: uint32);
 
+        // Reads data from the specified file or input/output (I/O) device
+        // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile
+        func ReadFile(
+            file: *opaque,
+            buffer: *opaque,
+            numberOfBytesToRead: uint32,
+            numberOfBytesRead: *uint32,
+            overlapped: *opaque) -> bool32;
+
         // Writes a character string to a console screen buffer beginning at the current cursor location
         // https://learn.microsoft.com/en-us/windows/console/writeconsole
         func WriteConsoleA(
