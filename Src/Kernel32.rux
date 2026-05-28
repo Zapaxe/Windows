@@ -205,6 +205,10 @@ module Windows {
             wideCharStr: *char16,
             wideChar: int32) -> int32;
 
+        /// Compares two blocks of memory and returns the number of bytes that match until the first difference
+        /// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlcomparememory
+        func RtlCompareMemory(source1: *const opaque, source2: *const opaque, length: uint) -> uint;
+
         /// Copies a block of memory from one location to another
         /// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa366535(v=vs.85)
         func RtlCopyMemory(destination: *opaque, source: *const opaque, length: uint);
